@@ -1,15 +1,17 @@
 # Indicators of Compromise (IOCs)
 
 ## Network Indicators
-Type Indicator Description
-Internal IP 10.4.10.132 Most active internal host
-DNS Server 10.4.10.4 DNS server used by the investigated host
-Suspicious IP 217.182.138.150 IP address associated with the suspicious domain
-SMTP Server 23.229.162.69 SMTP infrastructure observed during the investigation
-Victim Public IP 173.66.146.112 Public IP identified through HTTP traffic
+| Type | Indicator | Description |
+| --- | --- | --- |
+| Internal | IP 10.4.10.132 | Most active internal host |
+| DNS Server | 10.4.10.4 | DNS server used by the investigated host |
+| Suspicious IP | 217.182.138.150 | IP address associated with the suspicious domain |
+| SMTP Server | 23.229.162.69 | SMTP infrastructure observed during the investigation |
+| Victim Public IP | 173.66.146.112 | Public IP identified through HTTP traffic |
 
 ## Domain Indicators
-Type Indicator Description
+| Type | Indicator | Description |
+| ... | ... | ... |
 Suspicious Domain
 proformainvoices.
 com
