@@ -1,23 +1,15 @@
 # HawkEye Network Forensics Investigation Report
 
 ## 1. Executive Summary
-The HawkEye lab is a network-forensics investigation involving a PCAP capture containing network activity
-associated with an information-stealing malware infection.
+The HawkEye lab is a network-forensics investigation involving a PCAP capture containing network activity associated with an information-stealing malware infection.
 
-The investigation focused on analyzing network traffic to identify the affected system, suspicious DNS
-activity, malicious infrastructure, a downloaded executable, SMTP communication, encoded data, and
-evidence of data exfiltration.
+The investigation focused on analyzing network traffic to identify the affected system, suspicious DNS activity, malicious infrastructure, a downloaded executable, SMTP communication, encoded data, and evidence of data exfiltration.
 
-Wireshark was used as the primary network-analysis tool to examine DNS, HTTP, SMTP, TCP, endpoint, and
-packet information. CyberChef was used to decode Base64-encoded data. PowerShell was used to
-calculate the MD5 hash of an extracted executable.
+Wireshark was used as the primary network-analysis tool to examine DNS, HTTP, SMTP, TCP, endpoint, and packet information. CyberChef was used to decode Base64 encoded data. PowerShell was used to calculate the MD5 hash of an extracted executable.
 
-The investigation identified a suspicious domain, its associated IP address, a downloaded executable
-named tkraw_Protected99.exe, the executable's MD5 hash, SMTP infrastructure, an email account
-used for exfiltration, and evidence identifying the malware as HawkEye Keylogger – Reborn v9.
+The investigation identified a suspicious domain, its associated IP address, a downloaded executable named tkraw_Protected99.exe, the executable's MD5 hash, SMTP infrastructure, an email account used for exfiltration, and evidence identifying the malware as HawkEye Keylogger – Reborn v9.
 
-The official walkthrough describes the objective as reconstructing the attack timeline, identifying indicators
-of compromise, and determining how the malware collected and exfiltrated sensitive information.
+The official walkthrough describes the objective as reconstructing the attack timeline, identifying indicators of compromise, and determining how the malware collected and exfiltrated sensitive information.
 
 ## 2. Lab Overview
 **Lab:** HawkEye
