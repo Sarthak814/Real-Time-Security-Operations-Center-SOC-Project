@@ -378,7 +378,7 @@ The following is an illustrative timeline for the simulated scenario, not a reco
 | 09:45 | Alert review begins | Wazuh and Security Onion alerts |
 | 10:00 | Evidence correlation | Kibana searches and log analysis |
 | 10:15 | Incident case documentation | TheHive case records |
-| 10:30 | Response recommendations prepared Investigation notes and IoCs |
+| 10:30 | Response recommendations prepared | Investigation notes and IoCs |
 
 Actual timestamps should be replaced with the timestamps observed during a real exercise. The illustrative sequence does not establish that the attack occurred.
 
