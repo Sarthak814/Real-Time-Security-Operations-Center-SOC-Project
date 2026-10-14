@@ -408,33 +408,42 @@ Review DNS and outbound connection metadata. Determine whether the traffic volum
 These findings remain investigation hypotheses until supported by actual logs or other evidence.
 
 ## 8. Phase 3: Threat Intelligence and Mitigation
-8.1 Identifying Indicators of Compromise
+### 8.1 Identifying Indicators of Compromise
 Indicators of Compromise are artifacts or observations that may indicate malicious activity.
+
 Examples include:
-• Suspicious IP addresses.
-• Malicious or suspicious domains.
-• URLs associated with an incident.
-• File hashes.
-• Unexpected scheduled tasks.
-• Unusual process command lines.
-• Repeated authentication failures.
-• Unusual outbound DNS or HTTP connections.
-IoCs must be extracted from observed evidence or a clearly identified training dataset. Example indicators
-should not be presented as real attacker infrastructure without verification.
-8.2 Recording IoCs in MISP
+
+- Suspicious IP addresses.
+- Malicious or suspicious domains.
+- URLs associated with an incident.
+- File hashes.
+- Unexpected scheduled tasks.
+- Unusual process command lines.
+- Repeated authentication failures.
+- Unusual outbound DNS or HTTP connections.
+
+IoCs must be extracted from observed evidence or a clearly identified training dataset. Example indicators should not be presented as real attacker infrastructure without verification.
+
+### 8.2 Recording IoCs in MISP
 MISP can be used to create an event for the simulated incident.
-Example event details:
-• Event information: Simulated Multi-Stage APT Investigation.
-• Threat level: Undetermined until the scenario and evidence are assessed.
-• Analysis: Ongoing or completed, depending on the actual investigation.
-• Distribution: Restricted to the authorized training environment.
-• Attributes: Verified lab IP addresses, domains, file hashes, and other relevant observables.
+
+**Example event details:**
+
+- Event information: Simulated Multi-Stage APT Investigation.
+- Threat level: Undetermined until the scenario and evidence are assessed.
+- Analysis: Ongoing or completed, depending on the actual investigation.
+- Distribution: Restricted to the authorized training environment.
+- Attributes: Verified lab IP addresses, domains, file hashes, and other relevant observables.
+- 
 Each attribute should include its type, value, source, and contextual description.
-Synthetic indicators should be labelled as test data. Real threat intelligence should be shared only when
-permitted by the applicable data-handling and disclosure policies.
-8.3 Sigma Detection Rule
+
+Synthetic indicators should be labelled as test data. Real threat intelligence should be shared only when permitted by the applicable data-handling and disclosure policies.
+
+### 8.3 Sigma Detection Rule
 The following example Sigma rule identifies repeated failed logon events associated with a Windows host.
+
 It demonstrates a detection concept; it does not independently establish a brute-force attack.
+```
 title: Repeated Windows Logon Failures
 id: 8e1d30b4-6f22-4e7a-9b71-2f7e3b4c9101
 status: experimental
@@ -451,16 +460,19 @@ EventID: 4625
 condition: selection
 level: medium
 tags:
-- attack.credential_access
-- attack.t1110
-Explanation:
-• Event ID 4625 represents a failed Windows logon.
-• The rule identifies matching events.
-• Repeated failures should be grouped by relevant fields, such as source address, account, and time
-window, using the capabilities of the target detection platform.
-• The rule must be validated against the actual log source and supported Sigma backend.
-8.4 YARA Detection Rule
+ - attack.credential_access
+ - attack.t1110
+```
+**Explanation:**
+
+- Event ID 4625 represents a failed Windows logon.
+- The rule identifies matching events.
+- Repeated failures should be grouped by relevant fields, such as source address, account, and time window, using the capabilities of the target detection platform.
+- The rule must be validated against the actual log source and supported Sigma backend.
+
+### 8.4 YARA Detection Rule
 The following example demonstrates how YARA can identify a specific marker in a controlled training file.
+```
 rule Simulated_APT_Lab_Marker
 {
 meta:
@@ -473,154 +485,150 @@ $marker = "APT_LAB_SIMULATION_MARKER"
 condition:
 $marker
 }
-Explanation:
-This rule matches a file containing the exact synthetic marker. It is not a general -purpose malware
-detection rule and does not detect all APT-related files.
-The rule should be tested against a benign training file containing the marker and an unrelated file that
-does not contain it. Any resulting matches should be documented.
-8.5 Mitigation Plan
+```
+**Explanation:**
+
+This rule matches a file containing the exact synthetic marker. It is not a general -purpose malware detection rule and does not detect all APT-related files.
+
+The rule should be tested against a benign training file containing the marker and an unrelated file that does not contain it. Any resulting matches should be documented.
+
+### 8.5 Mitigation Plan
 The following mitigation measures address the attack stages included in the scenario.
-Initial access
-• Apply security updates and patches.
-• Implement email filtering and attachment inspection.
-• Use multifactor authentication where supported.
-• Educate users about suspicious links and attachments.
-• Apply least-privilege access controls.
-Persistence
-• Audit scheduled-task creation and modification.
-• Monitor changes to startup mechanisms and services.
-• Review endpoint security alerts.
-• Remove unauthorized persistence mechanisms after validation.
-Privilege escalation
-• Apply operating system and application security updates.
-• Limit administrative privileges.
-• Monitor privileged account activity.
-• Review group membership and permission changes.
-• Investigate suspicious process execution.
-Lateral movement
-• Restrict unnecessary administrative access between systems.
-• Use separate privileged accounts.
-• Apply network segmentation.
-• Monitor remote logons and service creation.
-• Use appropriate protections for credential material.
-Data exfiltration
-• Monitor outbound network connections.
-• Apply DNS filtering and logging.
-• Investigate unusual DNS patterns.
-• Restrict unnecessary outbound communication.
-• Apply data loss prevention controls where appropriate.
-• Review unusual transfer volumes and destinations.
-Detection and response
-• Centralize endpoint and network logs.
-• Synchronize timestamps across systems.
-• Validate detection rules regularly.
-• Maintain an incident response procedure.
-• Preserve relevant evidence before making changes when operationally feasible.
-• Retest controls after remediation.
+
+**Initial access**
+
+- Apply security updates and patches.
+- Implement email filtering and attachment inspection.
+- Use multifactor authentication where supported.
+- Educate users about suspicious links and attachments.
+- Apply least-privilege access controls.
+
+**Persistence**
+
+- Audit scheduled-task creation and modification.
+- Monitor changes to startup mechanisms and services.
+- Review endpoint security alerts.
+- Remove unauthorized persistence mechanisms after validation.
+
+**Privilege escalation**
+
+- Apply operating system and application security updates.
+- Limit administrative privileges.
+- Monitor privileged account activity.
+- Review group membership and permission changes.
+- Investigate suspicious process execution.
+
+**Lateral movement**
+
+- Restrict unnecessary administrative access between systems.
+- Use separate privileged accounts.
+- Apply network segmentation.
+- Monitor remote logons and service creation.
+- Use appropriate protections for credential material.
+
+**Data exfiltration**
+
+- Monitor outbound network connections.
+- Apply DNS filtering and logging.
+- Investigate unusual DNS patterns.
+- Restrict unnecessary outbound communication.
+- Apply data loss prevention controls where appropriate.
+- Review unusual transfer volumes and destinations.
+
+**Detection and response**
+
+- Centralize endpoint and network logs.
+- Synchronize timestamps across systems.
+- Validate detection rules regularly.
+- Maintain an incident response procedure.
+- Preserve relevant evidence before making changes when operationally feasible.
+- Retest controls after remediation.
+
 ## 9. Incident Response Procedure
-The following response procedure outlines how a SOC team should handle a suspected multi -stage APT
-incident.
-Step 1: Identification
-Review alerts from Wazuh and Security Onion. Confirm whether the available events indicate suspicious
-activity requiring investigation.
-Step 2: Initial Triage
-Identify affected hosts, users, event timestamps, suspicious processes, and relevant network connections.
-Determine the potential scope and severity.
-Step 3: Evidence Preservation
-Preserve relevant endpoint logs, network records, file hashes, alert details, and timestamps. Maintain
-appropriate access controls and document evidence handling.
-Step 4: Investigation
-Use Kibana to search and correlate events. Examine endpoint and network telemetry to determine
-whether the observed behavior is related.
-Step 5: Containment
+The following response procedure outlines how a SOC team should handle a suspected multi -stage APT incident.
+
+### Step 1: Identification
+Review alerts from Wazuh and Security Onion. Confirm whether the available events indicate suspicious activity requiring investigation.
+
+### Step 2: Initial Triage
+Identify affected hosts, users, event timestamps, suspicious processes, and relevant network connections. Determine the potential scope and severity.
+
+### Step 3: Evidence Preservation
+Preserve relevant endpoint logs, network records, file hashes, alert details, and timestamps. Maintain appropriate access controls and document evidence handling.
+
+### Step 4: Investigation
+Use Kibana to search and correlate events. Examine endpoint and network telemetry to determine whether the observed behavior is related.
+
+### Step 5: Containment
 When compromise is sufficiently suspected, follow the organization's incident response procedures to
-isolate affected systems, disable compromised accounts where appropriate, and block validated malicious
-indicators.
+isolate affected systems, disable compromised accounts where appropriate, and block validated malicious indicators.
+
 Containment actions should be coordinated to minimize operational disruption and preserve evidence.
-Step 6: Eradication
-Remove confirmed malicious artifacts, unauthorized persistence mechanisms, and unauthorized access.
-Patch exploited vulnerabilities and rotate credentials or other secrets when exposure is suspected.
-Step 7: Recovery
-Restore affected systems using trusted procedures. Validate security controls, monitor the systems for
-recurring suspicious activity, and confirm that required services operate normally.
-Step 8: Lessons Learned
-Document the root cause where established, detection gaps, response delays, remediation actions, and
-improvements required to reduce the likelihood of recurrence.
+
+### Step 6: Eradication
+Remove confirmed malicious artifacts, unauthorized persistence mechanisms, and unauthorized access. Patch exploited vulnerabilities and rotate credentials or other secrets when exposure is suspected.
+
+### Step 7: Recovery
+Restore affected systems using trusted procedures. Validate security controls, monitor the systems for recurring suspicious activity, and confirm that required services operate normally.
+
+### Step 8: Lessons Learned
+Document the root cause where established, detection gaps, response delays, remediation actions, and improvements required to reduce the likelihood of recurrence.
+
 ## 10. Security Gaps and Recommendations
 Potential gaps to evaluate during the exercise include:
-Security area Potential gap Recommended improvement
-Endpoint
-monitoring
-Missing process or authentication logs Enable and validate relevant audit policies
-Network visibility
-Incomplete DNS or outbound traffic
-records
-Improve sensor coverage and logging
-Detection rules
-Excessive false positives or missed
-events
-Test and tune detection logic
-Authentication
-Excessive privileges or weak
-authentication
-Enforce least privilege and MFA
-Log correlation
-Inconsistent timestamps or field
-mappings
-Synchronize clocks and normalize logs
-Threat
-intelligence
-Indicators lack context
-Record provenance and validate
-observables
-Incident response Unclear containment responsibilities Maintain and test response procedures
-Data protection
-Limited visibility into outbound
-transfers
-Apply suitable egress monitoring and data
-controls
+
+| Security area | Potential gap | Recommended improvement |
+| --- | --- | --- |
+| Endpoint monitoring | Missing process or authentication logs | Enable and validate relevant audit policies |
+| Network visibility | Incomplete DNS or outbound traffic records | Improve sensor coverage and logging |
+| Detection rules | Excessive false positives or missed events | Test and tune detection logic |
+| Authentication | Excessive privileges or weak authentication | Enforce least privilege and MFA |
+| Log correlation | Inconsistent timestamps or field mappings | Synchronize clocks and normalize logs |
+| Threat intelligence | Indicators lack context | Record provenance and validate observables |
+| Incident response | Unclear containment responsibilities | Maintain and test response procedures |
+| Data protection | Limited visibility into outbound transfers | Apply suitable egress monitoring and data controls |
+
 These are areas to assess, not confirmed weaknesses in a real environment.
+
 ## 11. Expected Results
 The simulated exercise is designed to demonstrate the following outcomes:
-• Identification of security events associated with common APT stages.
-• Investigation of authentication, process, and network activity.
-• Correlation of related events across available data sources.
-• Creation of an incident case with documented observables.
-• Reconstruction of an illustrative event timeline.
-• Preparation of sample Sigma and YARA detection rules.
-• Organization of validated indicators in MISP.
-• Development of a structured incident response and mitigation plan.
-The actual results depend on the laboratory configuration, event generation, log collection, rule
-deployment, and validation performed.
+
+- Identification of security events associated with common APT stages.
+- Investigation of authentication, process, and network activity.
+- Correlation of related events across available data sources.
+- Creation of an incident case with documented observables.
+- Reconstruction of an illustrative event timeline.
+- Preparation of sample Sigma and YARA detection rules.
+- Organization of validated indicators in MISP.
+- Development of a structured incident response and mitigation plan.
+
+The actual results depend on the laboratory configuration, event generation, log collection, rule deployment, and validation performed.
+
 ## 12. Challenges and Limitations
 Several challenges may affect the effectiveness of the investigation:
-• Missing or incomplete endpoint logs.
-• Limited network visibility.
-• Differences in field names and event formats.
-• False-positive security alerts.
-• Encrypted network traffic that limits payload inspection.
-• Unavailable or incorrectly configured tool integrations.
-• Incomplete threat intelligence.
-• Difficulty distinguishing authorized administrative activity from malicious behavior.
-The exercise also illustrates that installing security tools alone is not sufficient. Effective detection requires
-correct configuration, appropriate data sources, validated detection rules, and analyst investigation.
+
+- Missing or incomplete endpoint logs.
+- Limited network visibility.
+- Differences in field names and event formats.
+- False-positive security alerts.
+- Encrypted network traffic that limits payload inspection.
+- Unavailable or incorrectly configured tool integrations.
+- Incomplete threat intelligence.
+- Difficulty distinguishing authorized administrative activity from malicious behavior.
+
+The exercise also illustrates that installing security tools alone is not sufficient. Effective detection requires correct configuration, appropriate data sources, validated detection rules, and analyst investigation.
+
 ## 13. Conclusion
-This project describes a structured approach to simulating and investigating a multi -stage Advanced
-Persistent Threat using open-source SOC technologies.
-The Red Team phase models common attacker behaviors, including initial access, persistence, privilege
-escalation, lateral movement, and potential data exfiltration. The Blue Team phase explains how endpoint
-and network alerts can be investigated, correlated, and documented. The threat intelligence and
-mitigation phase demonstrates how IoCs, detection rules, and incident response procedures can support
-future prevention and detection.
-Security Onion and Wazuh provide complementary network and endpoint monitoring capabilities, while
-Kibana supports log investigation. TheHive and Cortex support incident case management and observable
-analysis, and MISP provides a platform for organizing threat intelligence. YARA and Sigma demonstrate two
-approaches to creating reusable detection logic.
-The overall workflow emphasizes evidence-based investigation, timely containment, remediation of
-security gaps, and continuous improvement of detection capabilities.
-A successful practical validation would require collecting actual laboratory events, testing the detection
-rules, documenting observed alerts, and recording the results of each response action. The simulated
-findings in this report should be distinguished from results verified in a running environment.
+This project describes a structured approach to simulating and investigating a multi -stage Advanced Persistent Threat using open-source SOC technologies.
+
+The Red Team phase models common attacker behaviors, including initial access, persistence, privilege escalation, lateral movement, and potential data exfiltration. The Blue Team phase explains how endpoint and network alerts can be investigated, correlated, and documented. The threat intelligence and mitigation phase demonstrates how IoCs, detection rules, and incident response procedures can support future prevention and detection.
+
+Security Onion and Wazuh provide complementary network and endpoint monitoring capabilities, while Kibana supports log investigation. TheHive and Cortex support incident case management and observable analysis, and MISP provides a platform for organizing threat intelligence. YARA and Sigma demonstrate two approaches to creating reusable detection logic.
+
+The overall workflow emphasizes evidence-based investigation, timely containment, remediation of security gaps, and continuous improvement of detection capabilities.
+
+A successful practical validation would require collecting actual laboratory events, testing the detection rules, documenting observed alerts, and recording the results of each response action. The simulated findings in this report should be distinguished from results verified in a running environment.
+
 ## 14. References
 1. Security Onion Documentation — https://docs.securityonion.net/
 2. Wazuh Documentation — https://documentation.wazuh.com/
@@ -632,6 +640,5 @@ findings in this report should be distinguished from results verified in a runni
 8. Sigma Documentation — https://sigmahq.io/
 9. MITRE ATT&CK Framework — https://attack.mitre.org/
 10. NIST Computer Security Incident Handling Guide — https://csrc.nist.gov/pubs/sp/800/61/r2/final
-Project status: Detailed simulated exercise and investigation workflow prepared. Actual tool execution,
-alert generation, indicator validation, and forensic findings require practical verification in an authorized
-laboratory environment.
+
+**Project status:** Detailed simulated exercise and investigation workflow prepared. Actual tool execution, alert generation, indicator validation, and forensic findings require practical verification in an authorized laboratory environment.
